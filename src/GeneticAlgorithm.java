@@ -47,6 +47,8 @@ public class GeneticAlgorithm {
                 if (Arrays.asList(10, 40, 80, 100, GENERATIONS).contains(generation)) {
                     System.out.println((generation / 10) + ":");
                     bestRoute = populationQueue.peek();
+
+                    assert bestRoute != null;
                     System.out.printf("Current best total distance: %s".formatted(bestRoute.totalDistance));
                 }
                 reproduce();
@@ -59,6 +61,8 @@ public class GeneticAlgorithm {
 
             bestRoute = populationQueue.peek();
             System.out.println("\nBest path:");
+            assert bestRoute != null;
+
             for (int index : bestRoute.path) {
                 System.out.print(cities.get(index).name + " -> ");
             }
