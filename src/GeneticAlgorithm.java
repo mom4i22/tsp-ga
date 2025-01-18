@@ -1,11 +1,12 @@
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.List;
 
 public class GeneticAlgorithm {
 
-    private static final List<Double> CITY_LONGITUDES = new ArrayList<>();
-    private static final List<Double> CITY_LATITUDES = new ArrayList<>();
+    public static final List<Double> CITY_LONGITUDES = new ArrayList<>();
+    public static final List<Double> CITY_LATITUDES = new ArrayList<>();
     private static int CITY_COUNT;
     private static final int POPULATION_SIZE = 250;
     private static final int GENERATIONS = 2000;
@@ -32,6 +33,7 @@ public class GeneticAlgorithm {
             }
 
             System.out.println("Number of cities: " + cities.size());
+            Visualizer.display(cities, new ArrayList<>());
 
             for (int i = 0; i < POPULATION_SIZE; i++) {
                 Route route = new Route();
@@ -62,15 +64,11 @@ public class GeneticAlgorithm {
             }
 
             bestRoute = populationQueue.peek();
-            System.out.println();
-            System.out.println("\nBest path:");
             assert bestRoute != null;
+            System.out.printf("\nTotal distance: %s".formatted(bestRoute.totalDistance));
 
-            for (int index : bestRoute.path) {
-                System.out.print(cities.get(index).name + " -> ");
-            }
-            System.out.println();
-            System.out.printf("Total distance: %s".formatted(bestRoute.totalDistance));
+            System.out.println("\nVisualizing the shortest path...");
+            Visualizer.display(cities, bestRoute.path);
 
         } catch (IOException e) {
             System.err.println("Error loading cities: " + e.getMessage());
