@@ -3,6 +3,7 @@ import java.nio.file.*;
 import java.util.*;
 
 public class GeneticAlgorithm {
+
     private static final List<Double> CITY_LONGITUDES = new ArrayList<>();
     private static final List<Double> CITY_LATITUDES = new ArrayList<>();
     private static int CITY_COUNT;
@@ -14,10 +15,11 @@ public class GeneticAlgorithm {
     private static final PriorityQueue<Route> nextGenerationQueue = new PriorityQueue<>(
             Comparator.comparingDouble(route -> route.totalDistance)
     );
+    private static final List<Integer> CHECKPOINTS = List.of(5, 50, 100, 1000, GENERATIONS);
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the number of cities or the filename to load cities: ");
+        System.out.print("Enter the file name to load cities: ");
         String input = scanner.nextLine();
 
         try {
@@ -44,8 +46,8 @@ public class GeneticAlgorithm {
             Route bestRoute;
             int generation = 0;
             while (generation <= GENERATIONS) {
-                if (Arrays.asList(10, 40, 80, 100, GENERATIONS).contains(generation)) {
-                    System.out.println((generation / 10) + ":");
+                if (CHECKPOINTS.contains(generation)) {
+                    System.out.println();
                     bestRoute = populationQueue.peek();
 
                     assert bestRoute != null;
@@ -60,6 +62,7 @@ public class GeneticAlgorithm {
             }
 
             bestRoute = populationQueue.peek();
+            System.out.println();
             System.out.println("\nBest path:");
             assert bestRoute != null;
 
