@@ -17,8 +17,8 @@ class Visualizer extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        int width = getWidth();
-        int height = getHeight();
+        int width = getWidth()-100;
+        int height = getHeight()-100;
 
         double minLongitude = GeneticAlgorithm.CITY_LONGITUDES.stream().min(Double::compareTo).orElse(0.0);
         double maxLongitude = GeneticAlgorithm.CITY_LONGITUDES.stream().max(Double::compareTo).orElse(1.0);
@@ -43,7 +43,7 @@ class Visualizer extends JPanel {
         g2d.setColor(Color.RED);
         for (int i = 0; i < cities.size(); i++) {
             g2d.fillOval(xCoords[i] - 5, yCoords[i] - 5, 10, 10);
-            g2d.drawString(cities.get(i).name, xCoords[i] + 5, yCoords[i] - 5);
+            g2d.drawString(cities.get(i).name, xCoords[i] + 10, yCoords[i] + 20);
         }
     }
 
@@ -51,7 +51,7 @@ class Visualizer extends JPanel {
         JFrame frame = new JFrame("Shortest Path Visualization");
         Visualizer visualizer = new Visualizer(cities, path);
         frame.add(visualizer);
-        frame.setSize(800, 800);
+        frame.setSize(1200, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
