@@ -9,14 +9,14 @@ public class GeneticAlgorithm {
     public static final List<Double> CITY_LATITUDES = new ArrayList<>();
     private static int CITY_COUNT;
     private static final int POPULATION_SIZE = 250;
-    private static final int GENERATIONS = 2000;
+    private static final int GENERATIONS = 100;
     private static final PriorityQueue<Route> populationQueue = new PriorityQueue<>(
             Comparator.comparingDouble(route -> route.totalDistance)
     );
     private static final PriorityQueue<Route> nextGenerationQueue = new PriorityQueue<>(
             Comparator.comparingDouble(route -> route.totalDistance)
     );
-    private static final List<Integer> CHECKPOINTS = List.of(5, 50, 100, 1000, GENERATIONS);
+    private static final List<Integer> CHECKPOINTS = List.of(5, 25, 50, 75, GENERATIONS);
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -77,24 +77,17 @@ public class GeneticAlgorithm {
         scanner.close();
     }
 
-    public static void mutate(Route route) {
-        Random random = new Random();
-        int firstRandomIndex = random.nextInt(CITY_COUNT);
-        int secondRandomIndex = random.nextInt(CITY_COUNT);
-        Collections.swap(route.path, firstRandomIndex, secondRandomIndex);
-    }
+    public static void reproduce() {
+        int initialSize = populationQueue.size();
+        while (populationQueue.size() > initialSize / 2) {
+            Route firstParent = populationQueue.poll();
+            Route secondParent = populationQueue.poll();
+            crossOver(firstParent, secondParent);
 
-    public static void completeChildRoute(Route child, Route parent, int endIndex) {
-        Set<Integer> visited = new HashSet<>(child.path);
-        for (int i = endIndex + 1; i < CITY_COUNT; i++) {
-            for (int nextCity : parent.path) {
-                if (!visited.contains(nextCity)) {
-                    child.path.add(nextCity);
-                    visited.add(nextCity);
-                    break;
-                }
-            }
+            nextGenerationQueue.add(firstParent);
+            nextGenerationQueue.add(secondParent);
         }
+        populationQueue.clear();
     }
 
     public static void crossOver(Route firstParent, Route secondParent) {
@@ -122,17 +115,24 @@ public class GeneticAlgorithm {
         nextGenerationQueue.add(secondChild);
     }
 
-    public static void reproduce() {
-        int initialSize = populationQueue.size();
-        while (populationQueue.size() > initialSize / 2) {
-            Route firstParent = populationQueue.poll();
-            Route secondParent = populationQueue.poll();
-            crossOver(firstParent, secondParent);
-
-            nextGenerationQueue.add(firstParent);
-            nextGenerationQueue.add(secondParent);
+    public static void completeChildRoute(Route child, Route parent, int endIndex) {
+        Set<Integer> visited = new HashSet<>(child.path);
+        for (int i = endIndex + 1; i < CITY_COUNT; i++) {
+            for (int nextCity : parent.path) {
+                if (!visited.contains(nextCity)) {
+                    child.path.add(nextCity);
+                    visited.add(nextCity);
+                    break;
+                }
+            }
         }
-        populationQueue.clear();
+    }
+
+    public static void mutate(Route route) {
+        Random random = new Random();
+        int firstRandomIndex = random.nextInt(CITY_COUNT);
+        int secondRandomIndex = random.nextInt(CITY_COUNT);
+        Collections.swap(route.path, firstRandomIndex, secondRandomIndex);
     }
 
     public static List<City> loadCitiesFromFile(String filename) throws IOException {
