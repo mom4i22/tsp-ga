@@ -33,7 +33,7 @@ public class GeneticAlgorithm {
             }
 
             System.out.println("Number of cities: " + cities.size());
-            Visualizer.display(cities, new ArrayList<>());
+            Visualizer.display(cities, Collections.emptyList());
 
             for (int i = 0; i < POPULATION_SIZE; i++) {
                 Route route = new Route();
