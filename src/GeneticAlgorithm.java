@@ -130,6 +130,13 @@ public class GeneticAlgorithm {
 
     public static void mutate(Route route) {
         Random random = new Random();
+
+        //Gaussian
+//        int randomIndex = random.nextInt(CITY_COUNT);
+//        int shift = (int) Math.round(random.nextGaussian());
+//        int newIndex = Math.min(Math.max(CITY_COUNT + shift, 0), route.path.size() - 1);
+//        Collections.swap(route.path, randomIndex, newIndex);
+
         int firstRandomIndex = random.nextInt(CITY_COUNT);
         int secondRandomIndex = random.nextInt(CITY_COUNT);
         Collections.swap(route.path, firstRandomIndex, secondRandomIndex);
