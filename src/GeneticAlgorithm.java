@@ -10,12 +10,9 @@ public class GeneticAlgorithm {
     private static int CITY_COUNT;
     private static final int POPULATION_SIZE = 250;
     private static final int GENERATIONS = 100;
-    private static final PriorityQueue<Route> populationQueue = new PriorityQueue<>(
-            Comparator.comparingDouble(route -> route.totalDistance)
-    );
-    private static final PriorityQueue<Route> nextGenerationQueue = new PriorityQueue<>(
-            Comparator.comparingDouble(route -> route.totalDistance)
-    );
+    private static final Comparator<Route> COMPARATOR_LAMBDA =  Comparator.comparingDouble(route -> route.totalDistance);
+    private static final PriorityQueue<Route> populationQueue = new PriorityQueue<>(COMPARATOR_LAMBDA);
+    private static final PriorityQueue<Route> nextGenerationQueue = new PriorityQueue<>(COMPARATOR_LAMBDA);
     private static final List<Integer> CHECKPOINTS = List.of(5, 25, 50, 75, GENERATIONS);
 
     public static void main(String[] args) {
